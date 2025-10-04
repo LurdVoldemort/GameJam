@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,9 @@ public class Player_Movement : MonoBehaviour
     public float player_health = 100f;
 
     //Melee Attack info
+    public GameObject meleePrefab;
     public float meleeRange = 1f;   // distance in front of player
+    public float meleeLifetime = 0.2f;
     public float meleeRadius = 0.5f; // size of hitbox
     public int damage = 1;
     public float attackRate = 0.5f;
@@ -81,22 +84,34 @@ public class Player_Movement : MonoBehaviour
     void Melee()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        Vector2 direction = (mousePos - transform.position).normalized;
-        Vector2 attackPos = (Vector2)transform.position + direction * meleeRange;
+        Vector2 attackDir = (mousePos - transform.position).normalized;
 
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPos, meleeRadius);
+        // Spawn position a short distance in front of the player
+        GameObject attackObj = Instantiate(meleePrefab, transform.position, Quaternion.identity);
+
+        // Determine the main attack direction
+        string direction = "Attack_" + GetDirection(attackDir);
+
+        // Enable the correct sprite
+        foreach (Transform child in attackObj.transform)
+        {
+            child.gameObject.SetActive(child.name.Contains(direction));
+        }
+
+        Destroy(attackObj, meleeLifetime);
 
     }
-    void OnDrawGizmosSelected()
+    string GetDirection(Vector2 dir)
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        Vector2 direction = (mousePos - transform.position).normalized;
-        Vector2 attackPos = (Vector2)transform.position + direction * meleeRange;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPos, meleeRadius);
+        // Determine which direction is dominant
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        {
+            return dir.x > 0 ? "Right" : "Left";
+        }
+        else
+        {
+            return dir.y > 0 ? "Up" : "Down";
+        }
     }
 
     public void take_damage(float damage)
