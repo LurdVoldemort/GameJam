@@ -17,6 +17,9 @@ public class Player_Movement : MonoBehaviour
     public GameObject bulletPrefab;   
     public float bulletSpeed;
 
+    //bullet trail
+    public GameObject trail;
+
     //Player health
     public float player_health = 100f;
 
@@ -68,16 +71,36 @@ public class Player_Movement : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
 
-        Vector2 direction = (mousePos - transform.position).normalized;
+        // Get the normalized direction from player to mouse
+        Vector2 mousePos2D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 playerPos2D = transform.position;
 
-        GameObject bullet = Instantiate(bulletPrefab, GetComponent<Transform>().position, Quaternion.identity);
+        Vector2 direction = (mousePos2D - playerPos2D).normalized;
+
+        // Offset distance — tweak this value to your liking
+        float trailOffset = 0.5f;
+
+        // Calculate the spawn position a little in front of the character
+        Vector2 spawnPos = (Vector2)transform.position + direction * trailOffset;
+
+        // Instantiate the bullet trail at the offset position
+        GameObject bulletTrail = Instantiate(trail, spawnPos, Quaternion.identity);
+
+        // Instantiate the bullet at the same offset position (so it matches the trail)
+        GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+
+        // (Optional) Rotate the bullet or trail to face the direction it's going
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+        bulletTrail.transform.rotation = Quaternion.Euler(0, 0, angle);
+
 
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.velocity = direction * bulletSpeed;
 
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 

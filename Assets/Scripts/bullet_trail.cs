@@ -2,18 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet_Logic : MonoBehaviour
+public class bullet_trail : MonoBehaviour
 {
     public float lifetime = 2f;
     // Start is called before the first frame update
     void Start()
     {
         Destroy(gameObject, lifetime);
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        Destroy(gameObject, 0.05f);
     }
 
     // Update is called once per frame
