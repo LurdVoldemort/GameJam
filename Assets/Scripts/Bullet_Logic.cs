@@ -13,7 +13,7 @@ public class Bullet_Logic : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject, 0.05f);
+        Destroy(gameObject);
     }
 
     // Update is called once per frame

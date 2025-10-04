@@ -78,7 +78,7 @@ public class Player_Movement : MonoBehaviour
         Vector2 direction = (mousePos2D - playerPos2D).normalized;
 
         // Offset distance — tweak this value to your liking
-        float trailOffset = 0.5f;
+        float trailOffset = 1f;
 
         // Calculate the spawn position a little in front of the character
         Vector2 spawnPos = (Vector2)transform.position + direction * trailOffset;
@@ -93,6 +93,8 @@ public class Player_Movement : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
         bulletTrail.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        bulletTrail.transform.SetParent(transform);
 
 
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());

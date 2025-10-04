@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class bullet_trail : MonoBehaviour
 {
-    public float lifetime = 2f;
+    public float lifetime = 0.2f;
     // Start is called before the first frame update
     void Start()
     {
