@@ -98,6 +98,8 @@ public class Player_Movement : MonoBehaviour
             child.gameObject.SetActive(child.name.Contains(direction));
         }
 
+        attackObj.transform.SetParent(transform);
+
         Destroy(attackObj, meleeLifetime);
 
     }
