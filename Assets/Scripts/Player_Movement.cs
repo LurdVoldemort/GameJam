@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player_Movement : MonoBehaviour
@@ -32,10 +33,30 @@ public class Player_Movement : MonoBehaviour
     public float attackRate = 0.5f;
     private float nextAttackTime = 0f;
 
+    //list of cards
+    private List<cards> cardList = new List<cards>();
+
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        GameObject cardObj = new GameObject("SpeedBoostCard");
+
+        dashCard dash = cardObj.AddComponent<dashCard>();
+
+        dash.length = 3f;
+        dash.usageRate = 4f;
+
+        cardList.Add(dash);
+
+        GameObject cardObject = new GameObject("SpeedBoostCard");
+
+        speedBoost boost = cardObject.AddComponent<speedBoost>();
+
+        boost.length = 5f;
+        boost.usageRate = 10f;
+
+        cardList.Add(boost);
     }
 
     // Update is called once per frame
@@ -50,6 +71,12 @@ public class Player_Movement : MonoBehaviour
             Melee();
             nextAttackTime = Time.time + attackRate;
         }
+
+        //Card activations
+        if (Input.GetKeyDown(KeyCode.Alpha1)){cardList[0].canUse(this);}
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { cardList[1].canUse(this);}
+        if (Input.GetKeyDown(KeyCode.Alpha3)) { cardList[2].canUse(this);}
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
