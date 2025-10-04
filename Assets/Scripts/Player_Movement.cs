@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class Player_Movement : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Player_Movement : MonoBehaviour
     private float nextFireTime = 0f;
     public GameObject bulletPrefab;   
     public float bulletSpeed;
+    public bool activeBulletModifier = false;
 
     //bullet trail
     public GameObject trail;
@@ -40,7 +42,7 @@ public class Player_Movement : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        GameObject cardObj = new GameObject("SpeedBoostCard");
+        GameObject cardObj = new GameObject("dashCard");
 
         dashCard dash = cardObj.AddComponent<dashCard>();
 
@@ -57,6 +59,15 @@ public class Player_Movement : MonoBehaviour
         boost.usageRate = 10f;
 
         cardList.Add(boost);
+
+        GameObject cardObject2 = new GameObject("scatterCard");
+
+        scatterShot scatter = cardObject2.AddComponent<scatterShot>();
+
+        scatter.length = 5f;
+        scatter.usageRate = 10f;
+
+        cardList.Add(scatter);
     }
 
     // Update is called once per frame
@@ -98,39 +109,65 @@ public class Player_Movement : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
 
-        // Get the normalized direction from player to mouse
-        Vector2 mousePos2D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 playerPos2D = transform.position;
+        Vector2 direction = ((Vector2)mousePos - (Vector2)transform.position).normalized;
 
-        Vector2 direction = (mousePos2D - playerPos2D).normalized;
 
-        // Offset distance — tweak this value to your liking
         float trailOffset = 1f;
-
-        // Calculate the spawn position a little in front of the character
         Vector2 spawnPos = (Vector2)transform.position + direction * trailOffset;
-
-        // Instantiate the bullet trail at the offset position
         GameObject bulletTrail = Instantiate(trail, spawnPos, Quaternion.identity);
-
-        // Instantiate the bullet at the same offset position (so it matches the trail)
-        GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
-
-        // (Optional) Rotate the bullet or trail to face the direction it's going
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
-        bulletTrail.transform.rotation = Quaternion.Euler(0, 0, angle);
-
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg; 
+        bulletTrail.transform.rotation = Quaternion.Euler(0, 0, angle); 
         bulletTrail.transform.SetParent(transform);
 
+        // Get number of bullets from active card
+        Debug.Log("Bullet" + activeBulletModifier);
+        int bulletCount = activeBulletModifier ? 3 : 1;
+
+        float spreadAngle = 10f;
+
+        if (bulletCount == 1)
+        {
+            SpawnBullet(direction);
+        }
+        else
+        {
+            float startAngle = -spreadAngle * (bulletCount - 1) / 2f; // center the spread
+
+            for (int i = 0; i < bulletCount; i++)
+            {
+                float angleOffset = startAngle + (spreadAngle * i);
+                Vector2 bulletDir = Quaternion.Euler(0, 0, angleOffset) * direction;
+                SpawnBullet(bulletDir);
+            }
+
+        }
+    }
+
+    void SpawnBullet(Vector2 bulletDir)
+    {
+        float trailOffset = 1f;
+        Vector2 spawnPos = (Vector2)transform.position + bulletDir * trailOffset;
+
+        GameObject bullet = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
+
+        float angle = Mathf.Atan2(bulletDir.y, bulletDir.x) * Mathf.Rad2Deg;
+        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+        
 
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        Collider2D bulletCollider = bullet.GetComponent<Collider2D>();
+        Collider2D[] otherBullets = FindObjectsOfType<Collider2D>();
+
+        foreach (Collider2D other in otherBullets)
+        {
+            if (other.TryGetComponent(out Bullet_Logic item))
+            {
+                Physics2D.IgnoreCollision(bulletCollider, other);
+            }
+        }
 
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        rb.velocity = direction * bulletSpeed;
-
-        angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        rb.velocity = bulletDir * bulletSpeed;
     }
 
     void Melee()

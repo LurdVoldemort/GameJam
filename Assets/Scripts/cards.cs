@@ -87,3 +87,30 @@ public class dashCard : cards
         player.speed = originalSpeed;
     }
 }
+
+public class scatterShot : cards
+{
+
+    // Default constructor (length comes from base)
+    public scatterShot(float length) : base(length) { }
+
+    // Activate method
+    public override void Activate(Player_Movement player)
+    {
+        // Start the dash coroutine
+        StartCoroutine(ScatterCoroutine(player));
+    }
+
+    private IEnumerator ScatterCoroutine(Player_Movement player)
+    {
+        player.activeBulletModifier = true;
+        Debug.Log("I am here" + player.activeBulletModifier);
+
+
+        // Wait for duration
+        yield return new WaitForSeconds(length);
+
+        // Reset speed
+        player.activeBulletModifier = false;
+    }
+}
