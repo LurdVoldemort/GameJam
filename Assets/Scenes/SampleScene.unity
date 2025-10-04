@@ -360,9 +360,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   animator: {fileID: 1878151110}
-  fireRate: 0.25
+  fireRate: 0.5
   bulletPrefab: {fileID: 3706528901437567225, guid: 0d850cea0b33b1f40ab2a26446851bcd, type: 3}
-  bulletSpeed: 10
+  bulletSpeed: 15
   player_health: 100
   meleeRange: 1
   meleeRadius: 0.5
