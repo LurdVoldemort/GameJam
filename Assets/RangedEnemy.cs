@@ -28,7 +28,7 @@ public class RangedEnemy : MonoBehaviour
     [SerializeField] private GameObject arrow;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform shootPoint;
-    // private bool hasLineOfSightWithPlayer;
+    private bool hasLineOfSightWithPlayer;
     private float fireRate;
     private float timer;
 
@@ -56,21 +56,24 @@ public class RangedEnemy : MonoBehaviour
         //Check for line of sight
         Vector2 directionToPlayer = (player.transform.position - transform.position).normalized;
         RaycastHit2D sightRay = Physics2D.Raycast(transform.position, directionToPlayer, distance: range +2, layerMask: wallLayer);
-        // if (sightRay.collider == null || sightRay.collider.gameObject == player)
-        // {
-        //     hasLineOfSightWithPlayer = true;
-        // }
-        // else
-        // {
-        //     hasLineOfSightWithPlayer = false;
-        // }
+        if (sightRay.collider == null || sightRay.collider.gameObject == player)
+        {
+            hasLineOfSightWithPlayer = true;
+        }
+        else
+        {
+            hasLineOfSightWithPlayer = false;
+        }
 
-        //if within range of player, disable movement in pathfinder
-        if (distanceToPlayer <= distanceToStop && (sightRay.collider == null || sightRay.collider.gameObject == player)) //and can see the player
-        {//should change to include shooting range
+        if (distanceToPlayer <= distanceToStop && hasLineOfSightWithPlayer)
+        {
             gameObject.GetComponent<AIPath>().canMove = false;
             enemyRb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
 
+        //if you have the shot, take the shot
+        if (hasLineOfSightWithPlayer)
+        {
             timer += Time.deltaTime;
             if (timer >= fireRate)
             {
@@ -79,7 +82,7 @@ public class RangedEnemy : MonoBehaviour
                 fireRate = UnityEngine.Random.Range(fireRateMin, fireRateMax);
             }
         }
-        else if (!(sightRay.collider == null || sightRay.collider.gameObject == player)) //if can't see the player, continue moving
+        else if (!hasLineOfSightWithPlayer || distanceToPlayer >= distanceToStop) //if can't see the player, continue moving
         {
             gameObject.GetComponent<AIPath>().canMove = true;
             enemyRb.constraints = RigidbodyConstraints2D.None;
@@ -89,7 +92,7 @@ public class RangedEnemy : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("shooting");
+        // Debug.Log("shooting");
         //instantiate arrow
         GameObject firedArrow = Instantiate(arrow, position: shootPoint.position, rotation: transform.rotation);
 
