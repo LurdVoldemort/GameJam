@@ -4,11 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Up Node
-  - Down Node
-  - Left Node
-  - Right Node
-  - Wall
+  - RangedEnemy
+  - MeleeEnemy
   layers:
   - Default
   - TransparentFX
@@ -19,7 +16,7 @@ TagManager:
   - 
   - Walls
   - Enemy
-  - 
+  - Arrow
   - 
   - 
   - 

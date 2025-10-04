@@ -1,41 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEngine;
 using Pathfinding;
-// using UnityEngine.AI;
+using Unity.VisualScripting;
+using UnityEngine;
+
+//TEMPLATE CLASS FOR ENEMY TYPES
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    public EnemyTemplate enemyType;
     [SerializeField] public GameObject player;
     // [SerializeField] float maxDistanceToPlayer;
     private float health;
     private Rigidbody2D enemyRb;
     private Vector3 playerPos;
-    public float distanceToPlayer;
+    private float distanceToPlayer;
     private float speed;
     private AIPath path;
 
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int maxHealth;
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float damage;
+    [SerializeField] private float range;
+    [SerializeField] private float distanceToStop;
+    [SerializeField] private float fireRateMax;
+    [SerializeField] private float fireRateMin;
+    private float fireRate;
+    private float timer;
+
+    EnemyBehaviour enemyBehaviour;
+
+    public void Start()
     {
         playerPos = player.transform.position;
         enemyRb = GetComponent<Rigidbody2D>();
 
-        health = enemyType.maxHealth;
-        speed = enemyType.movementSpeed;
-        gameObject.name = enemyType.enemyName;
+        timer = 0;
+
+        health = maxHealth;
 
         gameObject.GetComponent<AIPath>().maxSpeed = speed;
         path = GetComponent<AIPath>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    public void Update()
     {
-        //Call attack with enemyType.uniqueBehavior.Attack()
+        distanceToPlayer = Vector2.Distance(transform.position, playerPos);
+
+    }
+
+    public void Attack()
+    {
+        Debug.Log("Shoot!");
     }
 
     private void Die()

@@ -13,9 +13,8 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float spawnTimerMin;
     [SerializeField] private float chanceToSpawn;
     [SerializeField] private Transform spawnPos;
-    [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject player;
-    [SerializeField] private List<EnemyTemplate> enemyTypes = new List<EnemyTemplate>();
+    [SerializeField] private List<GameObject> enemyTypes = new List<GameObject>();
 
     private float timeUntilSpawn;
     private float spawnTimer;
@@ -45,10 +44,12 @@ public class Spawner : MonoBehaviour
 
     public void SpawnEnemy(Transform spawnPos)
     {
-        GameObject newEnemy = Instantiate(enemy, spawnPos.position, new UnityEngine.Quaternion(0, 0, 0, 0));
+        GameObject enemyType = enemyTypes[Random.Range(0, enemyTypes.Count)];
+        GameObject newEnemy = Instantiate(enemyType, spawnPos.position, new UnityEngine.Quaternion(0, 0, 0, 0));
         //give player object to new enemy
         newEnemy.GetComponent<AIDestinationSetter>().target = player.transform;
-        newEnemy.GetComponent<EnemyBehaviour>().enemyType = enemyTypes[Random.Range(0, enemyTypes.Count)];
+        if (newEnemy.CompareTag("MeleeEnemy")) { newEnemy.GetComponent<MeleeEnemy>().player = player; }
+        else if (newEnemy.CompareTag("RangedEnemy")) { newEnemy.GetComponent<RangedEnemy>().player = player; }
         //play sound effect and do animation
     }
 

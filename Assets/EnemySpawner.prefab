@@ -48,15 +48,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   spawnerInPlay: 1
-  spawnTimerMax: 8
-  spawnTimerMin: 4
+  spawnTimerMax: 10
+  spawnTimerMin: 6
   chanceToSpawn: 2
   spawnPos: {fileID: 3406830221548553987}
-  enemy: {fileID: 8852559345169169517, guid: abbcd19fcdfac9f4aa6f30ec2cc57b57, type: 3}
   player: {fileID: 0}
   enemyTypes:
-  - {fileID: 11400000, guid: 4a446efb601dc464fbcb7968007ac4b5, type: 2}
-  - {fileID: 11400000, guid: a7aae89779be5f444981eabf918c2a3c, type: 2}
+  - {fileID: 8852559345169169517, guid: e107e9df3efff64458624177065bf447, type: 3}
+  - {fileID: 8852559345169169517, guid: 149da224b8dc7544e844caaaaea32268, type: 3}
 --- !u!1 &4363782472812521871
 GameObject:
   m_ObjectHideFlags: 0
