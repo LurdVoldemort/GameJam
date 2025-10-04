@@ -5,18 +5,16 @@ using UnityEngine;
 using Pathfinding;
 // using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class EnemyBehaviour : MonoBehaviour
 {
-
-    [SerializeField] GameObject player;
-    // [SerializeField] float enemyMoveSpeed;
+    public EnemyTemplate enemyType;
+    [SerializeField] public GameObject player;
     // [SerializeField] float maxDistanceToPlayer;
-    [SerializeField] float maxHealth;
-    float health;
-    Rigidbody2D enemyRb;
-    Vector3 playerPos;
-    float distanceToPlayer;
-
+    private float health;
+    private Rigidbody2D enemyRb;
+    private Vector3 playerPos;
+    public float distanceToPlayer;
+    private float speed;
     private AIPath path;
 
 
@@ -25,25 +23,19 @@ public class Enemy : MonoBehaviour
     {
         playerPos = player.transform.position;
         enemyRb = GetComponent<Rigidbody2D>();
-        health = maxHealth;
 
+        health = enemyType.maxHealth;
+        speed = enemyType.movementSpeed;
+        gameObject.name = enemyType.enemyName;
+
+        gameObject.GetComponent<AIPath>().maxSpeed = speed;
         path = GetComponent<AIPath>();
-
-        //set player to dummy player game object
-
-        // agent = GetComponent<NavMeshAgent>();
-        // agent.updateRotation = false;
-        // agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        // if (distanceToPlayer > maxDistanceToPlayer)
-        // {
-        //     //transform.position = Vector2.MoveTowards(transform.position, playerPos, enemyMoveSpeed * Time.deltaTime);
-        // }
+        //Call attack with enemyType.uniqueBehavior.Attack()
     }
 
     private void Die()

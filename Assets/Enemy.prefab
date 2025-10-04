@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 9065727760255735628}
   - component: {fileID: 3664464566199051577}
-  - component: {fileID: 1908194089189980894}
   - component: {fileID: 7263650628484202318}
   - component: {fileID: 9152663615862369952}
   - component: {fileID: 2068493530698687892}
   - component: {fileID: 4488972774828445731}
   - component: {fileID: 2200400006563051802}
-  m_Layer: 0
+  - component: {fileID: 1792466990826989589}
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,20 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1908194089189980894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8852559345169169517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76cf374bf03a2664c8dec1a8bcd7e247, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 860517496937516965, guid: 95314388e61c91146b87fb96eac823c4, type: 3}
-  maxHealth: 10
 --- !u!50 &7263650628484202318
 Rigidbody2D:
   serializedVersion: 4
@@ -241,10 +227,10 @@ MonoBehaviour:
   rotationSpeed: 360
   slowdownDistance: 0.6
   pickNextWaypointDist: 2
-  endReachedDistance: 0.2
+  endReachedDistance: 1.5
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 0
-  whenCloseToDestination: 1
+  whenCloseToDestination: 0
   constrainInsideGraph: 0
 --- !u!114 &2200400006563051802
 MonoBehaviour:
@@ -260,3 +246,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   target: {fileID: 653927259908053201, guid: 95314388e61c91146b87fb96eac823c4, type: 3}
+--- !u!114 &1792466990826989589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8852559345169169517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150706eef146d684d952174ced30fb60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  maxHealth: 0
