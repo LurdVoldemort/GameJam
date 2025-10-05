@@ -42,32 +42,6 @@ public class Player_Movement : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        GameObject cardObj = new GameObject("dashCard");
-
-        dashCard dash = cardObj.AddComponent<dashCard>();
-
-        dash.length = 3f;
-        dash.usageRate = 4f;
-
-        cardList.Add(dash);
-
-        GameObject cardObject = new GameObject("SpeedBoostCard");
-
-        speedBoost boost = cardObject.AddComponent<speedBoost>();
-
-        boost.length = 5f;
-        boost.usageRate = 10f;
-
-        cardList.Add(boost);
-
-        GameObject cardObject2 = new GameObject("scatterCard");
-
-        scatterShot scatter = cardObject2.AddComponent<scatterShot>();
-
-        scatter.length = 5f;
-        scatter.usageRate = 10f;
-
-        cardList.Add(scatter);
     }
 
     // Update is called once per frame
@@ -84,9 +58,9 @@ public class Player_Movement : MonoBehaviour
         }
 
         //Card activations
-        if (Input.GetKeyDown(KeyCode.Alpha1)){cardList[0].canUse(this);}
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { cardList[1].canUse(this);}
-        if (Input.GetKeyDown(KeyCode.Alpha3)) { cardList[2].canUse(this);}
+        if (Input.GetKeyDown(KeyCode.Alpha1) && cardList[0] != null){cardList[0].canUse(this);}
+        if (Input.GetKeyDown(KeyCode.Alpha2) && cardList[1] != null) { cardList[1].canUse(this);}
+        if (Input.GetKeyDown(KeyCode.Alpha3) && cardList[2] != null) { cardList[2].canUse(this);}
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -120,7 +94,6 @@ public class Player_Movement : MonoBehaviour
         bulletTrail.transform.SetParent(transform);
 
         // Get number of bullets from active card
-        Debug.Log("Bullet" + activeBulletModifier);
         int bulletCount = activeBulletModifier ? 3 : 1;
 
         float spreadAngle = 10f;
@@ -168,6 +141,11 @@ public class Player_Movement : MonoBehaviour
 
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.velocity = bulletDir * bulletSpeed;
+    }
+
+    public void addCard(cards card)
+    {
+        cardList.Add(card);
     }
 
     void Melee()

@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using static UnityEngine.UI.Image;
 
 public class Inventory : MonoBehaviour
 {
 
     public PickupItem[] inventory;
+    public persistentInventory persistentInventory;
+    public Player_Movement player;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +27,16 @@ public class Inventory : MonoBehaviour
     {
         if (other.TryGetComponent(out PickupItem item))
         {
+            if (other.TryGetComponent(out cards card))
+            {
+                cards copy = card.makeCopy(card);
+                player.addCard(copy);
+                persistentInventory.addCard(copy);
+            }
+            if (item.itemName == "potion")
+            {
+                SceneManager.LoadScene("Card Selector");
+            }
             pickup(item);
         }
     }
@@ -31,6 +45,5 @@ public class Inventory : MonoBehaviour
     {
         inventory.Append(item);
         item.OnPickup();
-        Debug.Log(inventory.ToString());
     }
 }
