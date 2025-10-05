@@ -41,8 +41,8 @@ public class Inventory : MonoBehaviour
 
         card2.cardNameText = "Scatter Shot";
         card2.cardDescriptionText = "Makes you fast";
-        card2.length = Random.Range(1f, 10f);
-        card2.usageRate = Random.Range(0.5f, 1.5f);
+        card2.length = Random.Range(1f, 3f);
+        card2.usageRate = Random.Range(5f, 10f);
         card2.cardImage = cardSprite;
 
         // Assign some placeholder sprite if you want

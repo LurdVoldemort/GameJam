@@ -22,7 +22,7 @@ public class cards : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time > nextUse)
+        if (Time.time > nextUse && cardUIPrefab != null)
         {
             cardUIPrefab.ready();
         }
