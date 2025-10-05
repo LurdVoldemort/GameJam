@@ -253,7 +253,7 @@ MonoBehaviour:
   distanceToPlayer: 0
   maxHealth: 2
   movementSpeed: 2
-  enemyDamage: 5
+  enemyDamage: 10
   range: 8
   distanceToStop: 6
   fireRateMax: 4

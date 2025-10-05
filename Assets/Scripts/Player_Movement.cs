@@ -21,8 +21,8 @@ public class Player_Movement : MonoBehaviour
     public GameObject trail;
 
     //Player health
-    [SerializeField] private float player_max_health = 100f;
-    private float player_health = 100f;
+    [SerializeField] public float player_max_health = 100f;
+    public float player_health = 100f;
 
     //Melee Attack info
     public GameObject meleePrefab;
@@ -144,19 +144,13 @@ public class Player_Movement : MonoBehaviour
         }
     }
 
-    private void Die()
-    {
-        Debug.Log("Player Died");
-        //contact game manager and move to game over screen
-    }
-
     public void take_damage(float damage)
     {
         Debug.Log(player_health + " - " + damage);
         player_health -= damage;
         if (player_health <= 0)
         {
-            Die();
+            GameManager.Instance.PlayerDied(gameObject);
         }
         Debug.Log(player_health);
     }

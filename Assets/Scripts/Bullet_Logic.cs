@@ -11,7 +11,11 @@ public class Bullet_Logic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, lifetime);
+        player_Movement = FindObjectOfType<Player_Movement>();
+        if (player_Movement == null)
+        {
+            Debug.Log("Couldn't find player");
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)

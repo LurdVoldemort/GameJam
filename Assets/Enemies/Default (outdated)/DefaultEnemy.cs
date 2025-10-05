@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class RangedEnemy : MonoBehaviour
+public class DefaultEnemy : MonoBehaviour
 {
     [SerializeField] public GameObject player;
     [SerializeField] public GameObject spawner;
@@ -25,10 +25,7 @@ public class RangedEnemy : MonoBehaviour
     [SerializeField] private float distanceToStop;
     [SerializeField] private float fireRateMax;
     [SerializeField] private float fireRateMin;
-    [SerializeField] public float arrowSpeed;
-    [SerializeField] private GameObject arrow;
     [SerializeField] private LayerMask wallLayer;
-    [SerializeField] private Transform shootPoint;
     public bool hasLineOfSightWithPlayer;
     private float fireRate;
     private float timer;
@@ -78,7 +75,7 @@ public class RangedEnemy : MonoBehaviour
             }
 
             //if you have the shot, take the shot
-            if (hasLineOfSightWithPlayer)
+            if (hasLineOfSightWithPlayer && distanceToPlayer <= range)
             {
                 timer += Time.deltaTime;
                 if (timer >= fireRate)
@@ -99,12 +96,7 @@ public class RangedEnemy : MonoBehaviour
 
     public void Attack()
     {
-        // Debug.Log("shooting");
-        //instantiate arrow
-        GameObject firedArrow = Instantiate(arrow, position: shootPoint.position, rotation: transform.rotation);
-
-        // move towards player
-        firedArrow.GetComponent<ArrowBehavior>().playerPos = playerPos;
+        Debug.Log("Enemy Melee Attack");
     }
     
     private void Die()
@@ -116,6 +108,7 @@ public class RangedEnemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("Took damage");
         health -= damage;
         if (health <= 0)
         {

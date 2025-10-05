@@ -5,6 +5,10 @@ using UnityEngine;
 public class MeleeAttack : MonoBehaviour
 {
     public Player_Movement player_Movement;
+    void Start()
+    {
+        player_Movement = FindObjectOfType<Player_Movement>();
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
 

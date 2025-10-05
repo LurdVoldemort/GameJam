@@ -261,7 +261,7 @@ MonoBehaviour:
   player: {fileID: 0}
   maxHealth: 2
   movementSpeed: 2
-  damage: 5
+  damage: 10
   range: 8
   attackRateMax: 4
   attackRateMin: 2

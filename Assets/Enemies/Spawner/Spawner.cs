@@ -11,12 +11,9 @@ public class Spawner : MonoBehaviour
     [SerializeField] public bool spawnerInPlay;
     [SerializeField] private float spawnTimerMax;
     [SerializeField] private float spawnTimerMin;
-    [SerializeField] private float chanceToSpawn;
     [SerializeField] private Transform spawnPos;
     [SerializeField] private GameObject player;
     [SerializeField] private List<GameObject> enemyTypes = new List<GameObject>();
-    [SerializeField] private float maxEnemiesInPlay;
-    public float enemiesInPlay;
 
     private float timeUntilSpawn;
     private float spawnTimer;
@@ -26,10 +23,11 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = maxHealth;
+        player = GameObject.FindGameObjectWithTag("Player");
         timeUntilSpawn = 0;
         spawnTimer = spawnTimerMax;
-        spawnPos = GetComponentInChildren<Transform>();
-        enemiesInPlay = 0;
+        spawnPos = transform.Find("SpawnPoint");
     }
 
     // Update is called once per frame
@@ -37,11 +35,11 @@ public class Spawner : MonoBehaviour
     {
         //every random few seconds spawn enemy
         timeUntilSpawn += Time.deltaTime;
-        if (timeUntilSpawn >= spawnTimer && enemiesInPlay < maxEnemiesInPlay)
+        if (timeUntilSpawn >= spawnTimer && GameManager.Instance.enemiesInPlay < GameManager.Instance.maxEnemiesInPlay)
         {
             SpawnEnemy(spawnPos);
             timeUntilSpawn = 0;
-            enemiesInPlay += 1;
+            GameManager.Instance.enemiesInPlay += 1;
             spawnTimer = Random.Range(spawnTimerMin, spawnTimerMax);
         }
     }
@@ -49,29 +47,30 @@ public class Spawner : MonoBehaviour
     public void SpawnEnemy(Transform spawnPos)
     {
         GameObject enemyType = enemyTypes[Random.Range(0, enemyTypes.Count)];
-        GameObject newEnemy = Instantiate(enemyType);
-        newEnemy.transform.position = spawnPos.position;
+        GameObject newEnemy = Instantiate(enemyType, spawnPos.position, UnityEngine.Quaternion.identity);
         //give player object to new enemy
         newEnemy.GetComponent<AIDestinationSetter>().target = player.transform;
 
-        if (newEnemy.CompareTag("MeleeEnemy")) { newEnemy.GetComponent<MeleeEnemy>().player = player; }
-        else if (newEnemy.CompareTag("RangedEnemy")) { newEnemy.GetComponent<RangedEnemy>().player = player; }
+        if (newEnemy.CompareTag("MeleeEnemy")) { newEnemy.GetComponent<MeleeEnemy>().player = player; newEnemy.GetComponent<MeleeEnemy>().spawner = gameObject; }
+        else if (newEnemy.CompareTag("RangedEnemy")) { newEnemy.GetComponent<RangedEnemy>().player = player; newEnemy.GetComponent<RangedEnemy>().spawner = gameObject;}
         //play sound effect and do animation
     }
 
     private void Die()
     {
-        Debug.Log("Spawner Destroyed");
         //contact level manager and tell it you died
-        Destroy(gameObject);
+        GameManager.Instance.spawnersInPlay -= 1;
+        Destroy(gameObject, 0.5f);
     }
 
     public void TakeDamage(float damage)
     {
         if (spawnerInPlay)
         {
-            Debug.Log("Took damage");
+            Debug.Log("Spawner health: " + health);
+            Debug.Log("spawner took " + damage + " damage");
             health -= damage;
+            Debug.Log("Spawner health: " + health);
             if (health <= 0)
             {
                 Die();

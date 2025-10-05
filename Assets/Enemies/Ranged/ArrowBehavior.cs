@@ -13,6 +13,7 @@ public class ArrowBehavior : MonoBehaviour
 
     void Start()
     {
+        playerMovement = FindObjectOfType<Player_Movement>();
         Vector2 arrowPos = new Vector2(transform.position.x, transform.position.y);
         //give velocity in direction of player
         Vector2 directionToPlayer = (playerPos - arrowPos).normalized;
