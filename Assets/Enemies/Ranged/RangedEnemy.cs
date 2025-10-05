@@ -9,11 +9,12 @@ using UnityEngine;
 public class RangedEnemy : MonoBehaviour
 {
     [SerializeField] public GameObject player;
+    [SerializeField] public Spawner spawner;
     // [SerializeField] float maxDistanceToPlayer;
     private float health;
     private Rigidbody2D enemyRb;
     private Vector3 playerPos;
-    private float distanceToPlayer;
+    public float distanceToPlayer;
     private AIPath path;
 
 
@@ -28,7 +29,7 @@ public class RangedEnemy : MonoBehaviour
     [SerializeField] private GameObject arrow;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform shootPoint;
-    private bool hasLineOfSightWithPlayer;
+    public bool hasLineOfSightWithPlayer;
     private float fireRate;
     private float timer;
 
@@ -36,8 +37,6 @@ public class RangedEnemy : MonoBehaviour
     {
         playerPos = player.transform.position;
         enemyRb = GetComponent<Rigidbody2D>();
-
-        //or find player
 
         timer = 0;
 
@@ -54,8 +53,10 @@ public class RangedEnemy : MonoBehaviour
         distanceToPlayer = Vector2.Distance(transform.position, playerPos);
 
         //Check for line of sight
-        Vector2 directionToPlayer = (player.transform.position - transform.position).normalized;
-        RaycastHit2D sightRay = Physics2D.Raycast(transform.position, directionToPlayer, distance: range +2, layerMask: wallLayer);
+        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+        RaycastHit2D sightRay = Physics2D.Raycast(transform.position, directionToPlayer, distance: distanceToPlayer, layerMask: wallLayer);
+        
+
         if (sightRay.collider == null || sightRay.collider.gameObject == player)
         {
             hasLineOfSightWithPlayer = true;
@@ -82,7 +83,7 @@ public class RangedEnemy : MonoBehaviour
                 fireRate = UnityEngine.Random.Range(fireRateMin, fireRateMax);
             }
         }
-        else if (!hasLineOfSightWithPlayer || distanceToPlayer >= distanceToStop) //if can't see the player, continue moving
+        if (!hasLineOfSightWithPlayer || distanceToPlayer >= distanceToStop) //if can't see the player, continue moving
         {
             gameObject.GetComponent<AIPath>().canMove = true;
             enemyRb.constraints = RigidbodyConstraints2D.None;
@@ -102,12 +103,14 @@ public class RangedEnemy : MonoBehaviour
     
     private void Die()
     {
+        spawner.enemiesInPlay -= 1;
         Debug.Log("Enemy Killed");
         Destroy(gameObject);
     }
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("Took damage");
         health -= damage;
         if (health <= 0)
         {

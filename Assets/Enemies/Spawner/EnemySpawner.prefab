@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7141609028224341880}
   - component: {fileID: 6113875811463677824}
-  m_Layer: 0
+  - component: {fileID: 7314399181585730970}
+  m_Layer: 10
   m_Name: EnemySpawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 662371807202592510}
@@ -46,16 +47,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96396e642a89e740a5081990dfb519e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   spawnerInPlay: 1
-  spawnTimerMax: 10
-  spawnTimerMin: 6
+  spawnTimerMax: 6
+  spawnTimerMin: 3
   chanceToSpawn: 2
   spawnPos: {fileID: 3406830221548553987}
   player: {fileID: 0}
   enemyTypes:
   - {fileID: 8852559345169169517, guid: e107e9df3efff64458624177065bf447, type: 3}
   - {fileID: 8852559345169169517, guid: 149da224b8dc7544e844caaaaea32268, type: 3}
+  maxEnemiesInPlay: 5
+  enemiesInPlay: -3
+--- !u!58 &7314399181585730970
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4014095433014772345}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &4363782472812521871
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3406830221548553987}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 662371807202592510}
   - component: {fileID: 6607606664931967664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,8 +195,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1619857419
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0.097754, b: 1, a: 1}

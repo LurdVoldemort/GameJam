@@ -5,12 +5,11 @@ using UnityEngine.UIElements;
 
 public class ArrowBehavior : MonoBehaviour
 {
-    // [SerializeField] public Player_Movement playerMovement;
+    [SerializeField] public Player_Movement playerMovement;
     [SerializeField] public RangedEnemy rangedEnemy;
     [SerializeField] private float ArrowMaxTime = 2f;
     private float arrowAirTime;
     public Vector2 playerPos;
-
 
     void Start()
     {
@@ -34,9 +33,10 @@ public class ArrowBehavior : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            //playerMovement.take_damage(rangedEnemy.enemyDamage);
+            Debug.Log("hit player");
+            playerMovement.take_damage(rangedEnemy.enemyDamage);
         }
         //play hit sound effect
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
     }
 }

@@ -161,5 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4635100b869e6740a891dbbdd11dbc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 8630448529413995473, guid: 7be28df8c9ddada438a011f6b5a31c50, type: 3}
   rangedEnemy: {fileID: 2895110695651507128, guid: 149da224b8dc7544e844caaaaea32268, type: 3}
+  ArrowMaxTime: 2
   playerPos: {x: 0, y: 0}

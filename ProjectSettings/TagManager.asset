@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RangedEnemy
   - MeleeEnemy
+  - Spawner
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - Walls
   - Enemy
   - Arrow
-  - 
-  - 
+  - Spawner
+  - Bullet
   - 
   - 
   - 
@@ -42,4 +43,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Walls
+    uniqueID: 3669626977
+    locked: 0
+  - name: Enemies
+    uniqueID: 1619857419
     locked: 0
