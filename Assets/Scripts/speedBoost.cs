@@ -32,6 +32,7 @@ public class speedBoost : cards
     {
         float originalSpeed = player.speed;
         player.speed = 10f;
+        cardUIPrefab.used();
 
         yield return new WaitForSeconds(length);
 

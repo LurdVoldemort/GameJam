@@ -182,6 +182,7 @@ MonoBehaviour:
   length: 3
   usageRate: 15
   nextUse: 0
-  cardImage: {fileID: 1095770533, guid: 478d9ab04ddac9045a0a00e016790532, type: 3}
+  cardImage: {fileID: 21300000, guid: a9e3ec94352f26f43b864fb7feb178f8, type: 3}
   cardNameText: Dash
   cardDescriptionText: Jumps foward and slightly increases speed for 3 seconds
+  cardUIPrefab: {fileID: 4601796119306877034, guid: 0a1b3a69179cde4428584dc6d06c0fbb, type: 3}

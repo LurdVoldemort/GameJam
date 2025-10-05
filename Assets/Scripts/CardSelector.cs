@@ -20,7 +20,7 @@ public class CardSelector : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             GameObject cardObj = new GameObject("speedBoost");
             speedBoost card = cardObj.AddComponent<speedBoost>();
@@ -28,7 +28,7 @@ public class CardSelector : MonoBehaviour
             card.cardNameText = "Speed Boost";
             card.cardDescriptionText = "Makes you fast";
             card.length = Random.Range(1f, 3f);
-            card.usageRate = Random.Range(0.5f, 1.5f);
+            card.usageRate = Random.Range(5f, 10f);
             card.cardImage = cardSprite;
 
             // Assign some placeholder sprite if you want

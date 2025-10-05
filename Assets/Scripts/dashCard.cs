@@ -44,6 +44,7 @@ public class dashCard : cards
 
         // Move player instantly in that direction
         player.transform.position += dashDirection * 2;
+        cardUIPrefab.used();
 
         // Wait for duration
         yield return new WaitForSeconds(length);

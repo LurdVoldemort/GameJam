@@ -13,9 +13,19 @@ public class cards : MonoBehaviour
     public string cardNameText;
     public string cardDescriptionText;
 
+    public cardUISide cardUIPrefab;
+
     public cards(float length)
     {
         this.length = length;
+    }
+
+    private void Update()
+    {
+        if (Time.time > nextUse)
+        {
+            cardUIPrefab.ready();
+        }
     }
 
     public void canUse(Player_Movement player)

@@ -32,6 +32,8 @@ public class scatterShot : cards
     private IEnumerator ScatterCoroutine(Player_Movement player)
     {
         player.activeBulletModifier = true;
+        cardUIPrefab.used();
+
 
 
         // Wait for duration
