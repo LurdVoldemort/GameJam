@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
+// using System.Numerics;
 using Pathfinding;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -15,7 +15,7 @@ public class MeleeEnemy : MonoBehaviour
     // [SerializeField] float maxDistanceToPlayer;
     private float health;
     private Rigidbody2D enemyRb;
-    private UnityEngine.Vector3 playerPos;
+    private Vector3 playerPos;
     public float distanceToPlayer;
     private AIPath path;
 
@@ -35,6 +35,9 @@ public class MeleeEnemy : MonoBehaviour
     private Animator animator;
     [SerializeField] private GameObject swing;
 
+    private Vector3 currentVelocity;
+    private Vector3 previousPosition;
+
     public void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -52,6 +55,7 @@ public class MeleeEnemy : MonoBehaviour
         path = GetComponent<AIPath>();
 
         animator = GetComponent<Animator>();
+        previousPosition = transform.position;
     }
 
     public void Update()
@@ -59,10 +63,10 @@ public class MeleeEnemy : MonoBehaviour
         if (player != null)
         {
             playerPos = player.transform.position;
-            distanceToPlayer = UnityEngine.Vector2.Distance(transform.position, playerPos);
+            distanceToPlayer = Vector2.Distance(transform.position, playerPos);
 
             //Check for line of sight
-            UnityEngine.Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+            Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
             RaycastHit2D sightRay = Physics2D.Raycast(transform.position, directionToPlayer, distance: distanceToPlayer, layerMask: wallLayer);
 
 
@@ -99,9 +103,15 @@ public class MeleeEnemy : MonoBehaviour
                 enemyRb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
 
+            //calculate velocity
+            Vector3 positionDelta = transform.position - previousPosition;
+            currentVelocity = positionDelta / Time.deltaTime;
+            previousPosition = transform.position;
+
             //send velocity info to animator
-            animator.SetFloat("X Velocity", enemyRb.velocity.x);
-            animator.SetFloat("Y Velocity", enemyRb.velocity.y);
+            animator.SetFloat("X Velocity", currentVelocity.x);
+            animator.SetFloat("Y Velocity", currentVelocity.y);
+            animator.SetBool("Velocity", currentVelocity.magnitude > 0);
         }
     }
 
@@ -112,7 +122,7 @@ public class MeleeEnemy : MonoBehaviour
         Debug.Log("melee attack deals " + enemyDamage + " damage");
 
         //find angle to rotate swing
-        UnityEngine.Vector3 dir = (player.transform.position - transform.position).normalized;
+        Vector3 dir = (player.transform.position - transform.position).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         
         //do animation

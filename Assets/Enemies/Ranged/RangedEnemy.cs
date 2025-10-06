@@ -32,6 +32,10 @@ public class RangedEnemy : MonoBehaviour
     public bool hasLineOfSightWithPlayer;
     private float fireRate;
     private float timer;
+    private Animator animator;
+
+    private Vector3 currentVelocity;
+    private Vector3 previousPosition;
 
     public void Start()
     {
@@ -47,6 +51,9 @@ public class RangedEnemy : MonoBehaviour
         gameObject.GetComponent<AIPath>().maxSpeed = movementSpeed;
         gameObject.GetComponent<AIPath>().endReachedDistance = distanceToStop;
         path = GetComponent<AIPath>();
+
+        animator = GetComponent<Animator>();
+        previousPosition = transform.position;
     }
 
     public void Update()
@@ -94,14 +101,27 @@ public class RangedEnemy : MonoBehaviour
                 enemyRb.constraints = RigidbodyConstraints2D.None;
                 enemyRb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
+
+            //calculate velocity
+            Vector3 positionDelta = transform.position - previousPosition;
+            currentVelocity = positionDelta / Time.deltaTime;
+            previousPosition = transform.position;
+
+            //send velocity info to animator
+            animator.SetFloat("X Velocity", currentVelocity.x);
+            animator.SetFloat("Y Velocity", currentVelocity.y);
+            animator.SetBool("Velocity", currentVelocity.magnitude > 0);
         }
     }
 
     public void Attack()
     {
-        // Debug.Log("shooting");
+        //find angle to rotate swing
+        Vector3 dir = (player.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
         //instantiate arrow
-        GameObject firedArrow = Instantiate(arrow, position: shootPoint.position, rotation: transform.rotation);
+        GameObject firedArrow = Instantiate(arrow, position: shootPoint.position, rotation: Quaternion.Euler(0, 0, angle - 90));
 
         // move towards player
         firedArrow.GetComponent<ArrowBehavior>().playerPos = playerPos;
