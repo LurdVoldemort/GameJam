@@ -132,7 +132,7 @@ public class MeleeEnemy : MonoBehaviour
     private IEnumerator SwingRoutine(float angle)
     {
         swing.SetActive(true);
-        swing.transform.rotation = UnityEngine.Quaternion.Euler(0, 0, angle + 90);
+        swing.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
         // Wait for n seconds
         yield return new WaitForSeconds(swingTime);
 
