@@ -80,9 +80,7 @@ public class GameManager : MonoBehaviour
         //colour red
         player.GetComponent<SpriteRenderer>().color = Color.red;
 
-        WaitABit(2f);
-        // player.SetActive(false);
-        // Debug.Log("Died");
+        StartCoroutine(WaitABit(2f));
         //go to next scene
         SceneManager.LoadScene("GameOver");
     }
@@ -118,7 +116,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator WaitABit(float seconds)
+    public IEnumerator WaitABit(float seconds)
     {
         yield return new WaitForSeconds(seconds);
     }
