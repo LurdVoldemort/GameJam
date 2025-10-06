@@ -5,15 +5,15 @@ using UnityEngine.UIElements;
 
 public class ArrowBehavior : MonoBehaviour
 {
-    // [SerializeField] public Player_Movement playerMovement;
+    [SerializeField] public Player_Movement playerMovement;
     [SerializeField] public RangedEnemy rangedEnemy;
     [SerializeField] private float ArrowMaxTime = 2f;
     private float arrowAirTime;
     public Vector2 playerPos;
 
-
     void Start()
     {
+        playerMovement = FindObjectOfType<Player_Movement>();
         Vector2 arrowPos = new Vector2(transform.position.x, transform.position.y);
         //give velocity in direction of player
         Vector2 directionToPlayer = (playerPos - arrowPos).normalized;
@@ -34,9 +34,10 @@ public class ArrowBehavior : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            //playerMovement.take_damage(rangedEnemy.enemyDamage);
+            Debug.Log("hit player");
+            playerMovement.take_damage(rangedEnemy.enemyDamage);
         }
         //play hit sound effect
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
     }
 }

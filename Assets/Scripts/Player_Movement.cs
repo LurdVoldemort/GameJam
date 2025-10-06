@@ -16,7 +16,7 @@ public class Player_Movement : MonoBehaviour
     //Firing bullet info
     public float fireRate = 0.25f;
     private float nextFireTime = 0f;
-    public GameObject bulletPrefab;   
+    public GameObject bulletPrefab;
     public float bulletSpeed;
     public bool activeBulletModifier = false;
 
@@ -24,6 +24,7 @@ public class Player_Movement : MonoBehaviour
     public GameObject trail;
 
     //Player health
+    [SerializeField] public float player_max_health = 100f;
     public float player_health = 100f;
 
     //Melee Attack info
@@ -42,6 +43,8 @@ public class Player_Movement : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        player_health = player_max_health;
+        Debug.Log(player_health);
     }
 
     // Update is called once per frame
@@ -154,7 +157,7 @@ public class Player_Movement : MonoBehaviour
         Vector2 attackDir = (mousePos - transform.position).normalized;
 
         // Spawn position a short distance in front of the player
-        GameObject attackObj = Instantiate(meleePrefab, transform.position, Quaternion.identity);
+        GameObject attackObj = Instantiate(meleePrefab, transform.position, Quaternion.identity);   
 
         // Determine the main attack direction
         string direction = "Attack_" + GetDirection(attackDir);
@@ -185,6 +188,12 @@ public class Player_Movement : MonoBehaviour
 
     public void take_damage(float damage)
     {
-        player_health = player_health - damage;
+        Debug.Log(player_health + " - " + damage);
+        player_health -= damage;
+        if (player_health <= 0)
+        {
+            GameManager.Instance.PlayerDied(gameObject);
+        }
+        Debug.Log(player_health);
     }
 }
