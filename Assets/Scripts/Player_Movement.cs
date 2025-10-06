@@ -12,6 +12,9 @@ public class Player_Movement : MonoBehaviour
     private Rigidbody2D rb2d;
     //movement animation
     public Animator animator;
+    //player audio
+    public AudioSource playerWalkingAudio;
+    public AudioClip playerDamage;
 
     //Firing bullet info
     public float fireRate = 0.25f;
@@ -22,6 +25,10 @@ public class Player_Movement : MonoBehaviour
 
     //bullet trail
     public GameObject trail;
+
+    //bullet audio
+    public AudioClip gunShotAudio;
+    public AudioClip reload;
 
     //Player health
     [SerializeField] public float player_max_health = 100f;
@@ -76,6 +83,17 @@ public class Player_Movement : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         Vector2 movement = new Vector2(moveX, moveY).normalized;
 
+        if (movement.sqrMagnitude > 0f)
+        {
+            if (!playerWalkingAudio.isPlaying)
+                playerWalkingAudio.Play();
+        }
+        else
+        {
+            if (playerWalkingAudio.isPlaying)
+                playerWalkingAudio.Stop();
+        }
+
         animator.SetFloat("MoveX", movement.x);
         animator.SetFloat("MoveY", movement.y);
         animator.SetBool("Speed", 0 < movement.sqrMagnitude);
@@ -87,6 +105,9 @@ public class Player_Movement : MonoBehaviour
         mousePos.z = 0f;
 
         Vector2 direction = ((Vector2)mousePos - (Vector2)transform.position).normalized;
+
+        AudioManager.PlaySound(gunShotAudio, transform.position);
+        AudioManager.PlaySound(reload, transform.position);
 
 
         float trailOffset = 1f;
@@ -194,6 +215,19 @@ public class Player_Movement : MonoBehaviour
         {
             GameManager.Instance.PlayerDied(gameObject);
         }
+        AudioManager.PlaySound(playerDamage, transform.position);
         Debug.Log(player_health);
+    }
+}
+
+public static class AudioManager
+{
+    public static void PlaySound(AudioClip clip, Vector3 position)
+    {
+        GameObject tempGO = new GameObject("TempAudio");
+        AudioSource aSource = tempGO.AddComponent<AudioSource>();
+        aSource.clip = clip;
+        aSource.Play();
+        GameObject.Destroy(tempGO, clip.length);
     }
 }
