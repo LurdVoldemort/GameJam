@@ -16,9 +16,6 @@ public class Inventory : MonoBehaviour
     public Transform cardParent;
     public GameObject cardUIPrefab;
     public Sprite cardSprite;
-
-    //pickup sound 
-    public AudioClip pickupSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -88,7 +85,6 @@ public class Inventory : MonoBehaviour
     public void pickup(PickupItem item)
     {
         inventory.Append(item);
-        AudioManager.PlaySound(pickupSound, item.transform.position);
         item.OnPickup();
     }
 }
