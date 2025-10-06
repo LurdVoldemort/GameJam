@@ -14,8 +14,7 @@ GameObject:
   - component: {fileID: -825197491069975096}
   - component: {fileID: -3739998556852442573}
   - component: {fileID: -4746838359229878515}
-  - component: {fileID: -6336318149821256520}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8b763b9968a18419b3f6c42b8f98b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangedEnemy: {fileID: 2895110695651507128, guid: 149da224b8dc7544e844caaaaea32268, type: 3}
+  meleeEnemy: {fileID: 2226312431648806789, guid: e107e9df3efff64458624177065bf447, type: 3}
+  player_Movement: {fileID: 8630448529413995473, guid: 7be28df8c9ddada438a011f6b5a31c50, type: 3}
   lifetime: 2
 --- !u!61 &-3739998556852442573
 BoxCollider2D:
