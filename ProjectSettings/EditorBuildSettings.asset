@@ -17,4 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Room 1.unity
     guid: e3aebf0c3f03c6d428b84c43cb48c74e
+    path: Assets/Scenes/Card Selector.unity
+    guid: ff3146b148c4f7144826fe68f0cd6c7a
   m_configObjects: {}

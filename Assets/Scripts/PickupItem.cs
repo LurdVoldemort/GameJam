@@ -8,7 +8,6 @@ public class PickupItem : MonoBehaviour
 
     public void OnPickup()
     {
-        Debug.Log("Picked up: " + itemName);
         Destroy(gameObject); // remove the item from the scene
     }
 }
